@@ -1,0 +1,44 @@
+body{
+    background-color: palevioletred;
+}
+.page-layout{
+
+}
+.title{
+    background-color: tan;
+    max-width: 35%;
+    width: 600px;
+    display: grid;
+    justify-content: space-between;
+    font-family: monospace, sans-serif;
+    font-size: large;
+    transition: all 2s linear;
+}
+.title-wrapper{
+    display: flex;
+}
+
+h1.top-title{
+    overflow: hidden;
+}
+h1.bot-title{
+    overflow: hidden;
+    margin-right: 0;
+}
+.title-list{
+    background-color: navajowhite;
+    width: 33%;
+    overflow: hidden;
+    height: 200px;
+    transition: height 1s linear;
+}
+.closed{
+    width: 21px;
+}
+.tucked{
+    height: 0;
+}
+.reveal {
+    width: 20px;
+    background-color: tan;
+}
