@@ -1,10 +1,11 @@
-import {Outlet} from "react-router";
+import {Outlet, useNavigate} from "react-router";
 import {useState} from "react";
+import {Link, NavLink} from "react-router-dom";
 
 function Title(props){
     const [closed, setClosed] = useState(false);
     const [tucked, setTucked] = useState(false);
-
+    const navigate = useNavigate();
     const doTuck = ()=>{
         switch(true){
             case(!closed && tucked):
@@ -35,10 +36,22 @@ function Title(props){
             // default:
         }
     }
+    const navClick=(e)=>{
+        e.preventDefault();
+        switch(e.target.value){
+            case("Main"):
+                (navigate("/main/"));
+                break;
+            case("Resume"):
+                (navigate("/resume/"))
+                break;
+        }
+    }
+
     return(
-        <div>
+        <div className={"title"} >
             <div className={"title-wrapper"}>
-                <div className={"title " + (closed?"closed":null)} onTransitionEnd={doTuck}>
+                <div className={"title-head " + (closed?"closed":null)} onTransitionEnd={doTuck}>
                     <h1 className={"top-title"}>Jeremy</h1>
                     <h1 className={"bot-title"}>Cox</h1>
                 </div>
@@ -49,17 +62,22 @@ function Title(props){
                 </label>
             </div>
             <div className={"title-list "+(tucked?"tucked":"")} onTransitionEnd={e=>doClose()}>
-                <ul>
-                    <li>
-                        About Me
-                    </li>
-                    <li>
-                        My Projects
-                    </li>
-                    <li>
-                        Current Interests
-                    </li>
-                </ul>
+                <label className={"title-link"} >
+
+                    <Link to={"home"} >
+                        Home
+                    </Link>
+
+                </label>
+                <label className={"title-link"} >
+                    <Link to={"resume"} >
+                        Resumes
+                    </Link>
+                </label>
+                {/*<label className={"title-link"} >*/}
+                {/*    Text Here*/}
+                {/*    <input type={"button"} hidden={true} />*/}
+                {/*</label>*/}
             </div>
         </div>
 

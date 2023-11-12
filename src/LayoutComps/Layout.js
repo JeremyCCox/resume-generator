@@ -1,15 +1,21 @@
 import {Outlet} from "react-router";
 import Title from "./Title";
+import Content from "./Content";
+import Foot from "./Foot";
 
-function Layout(){
+function Layout(props){
 
     return(
-        <div className={"page-layout"}>
-            <Title>
+        <>
+            <div className={"page-layout"}>
+                <Title/>
+                <Content>
+                    <Outlet/>
+                </Content>
+            </div>
+            <Foot/>
+        </>
 
-            </Title>
-            <Outlet/>
-        </div>
     )
 
 }export default Layout;

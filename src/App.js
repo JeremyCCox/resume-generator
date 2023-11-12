@@ -1,7 +1,10 @@
 import TestComp from "./TestComp";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Layout from "./LayoutComps/Layout";
+import HomePage from "./LayoutComps/HomePage";
+import Resume from "./LayoutComps/Resume/Resume";
 import "./static/styles.css"
+import {ResumeProvider} from "./ContextHooks/useResumeContext";
 
 function App(){
 
@@ -9,15 +12,20 @@ function App(){
 
         <BrowserRouter>
             <Routes>
-                <Route path={""} element={
+                <Route path={"/*"} element={
                     <Layout>
 
                     </Layout>
                 }>
-                    <Route>
-
-                    </Route>
+                    <Route path={""}/>
+                    <Route path={"home"} element={<HomePage/>}/>
+                    <Route path={"resume"} element={
+                        <ResumeProvider>
+                            <Resume/>
+                        </ResumeProvider>
+                    }/>
                 </Route>
+                {/*<Route element={<HttpChallenge>}/>*/}
             </Routes>
         </BrowserRouter>
     );
