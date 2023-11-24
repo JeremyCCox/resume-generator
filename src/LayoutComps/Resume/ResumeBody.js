@@ -15,21 +15,23 @@ function ResumeBody(props){
     const heightRef = useRef()
 
 
-    useLayoutEffect(()=>{
-       if(heightRef.current){
-           setBodyHeight(heightRef.current.scrollHeight)
-           // console.log(heightRef.current)
-       }
-    },[])
 
 
 
     return (
         <>
-            <div className={"resume-body"}>
+            <div className={"resume-body"} onDragOver={props.addElement} onDrop={props.dropElement}>
                 {/*{bodyHeight}*/}
                 <ResumeContact contact={resume.contact} />
-                <ResumeContent elements={resume.content} bodyHeight={bodyHeight} updateElements={updateElements}/>
+                <ResumeContent
+                    updateElements={props.updateElements}
+                    dropElem={props.dropElement}
+                    swapElem={props.swapElement}
+                    startDrag={props.startDrag}
+                    dragged={props.dragged}
+                    elements={props.elements}
+
+                />
             </div>
         </>
 

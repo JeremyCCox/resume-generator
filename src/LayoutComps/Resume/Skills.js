@@ -13,11 +13,11 @@ function Skills(props){
         }
     },[])
     return(
-        <div className={"skill"} id={index} draggable={true} onDragEnd={stopDrag} onDrag={startDrag} >
+        <div className={"skill"} >
             <h3>{content.title}</h3>
             <ul>
                 {Object.values(content.skills).map(skill=>{
-                    return(<li>{skill}</li>)
+                    return(<li key={skill}>{skill}</li>)
                 })}
             </ul>
         </div>

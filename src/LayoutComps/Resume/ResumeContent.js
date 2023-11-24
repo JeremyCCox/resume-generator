@@ -6,128 +6,113 @@ import {useResume} from "../../ContextHooks/useResumeContext";
 import Marker from "../Marker";
 import Draggable from "./Draggable";
 import draggable from "./Draggable";
+import content from "../Content";
 
 
 function ResumeContent(props){
-    const {elements, bodyHeight} = props;
-    const [newElements, setNewElements] = useState(Object.assign([],elements))
-    const [dragged, setDragged] = useState();
-    const [dragX, setDragX]=useState();
-    const [dragY, setDragY]=useState();
-    const [targetHeight, setTargetHeight]=useState();
-    const updateElement=(index, value)=>{
-        newElements[index] = value;
-        props.updateElements(newElements)
-    }
-    const startDrag=(e)=>{
-        // console.log(e);
-        if(e.target.className !== "draggable"){
-            return;
-        }
-        let initialList = Object.assign([],newElements)
-        let newDragged = initialList.find(({id})=> id === parseInt(e.target.id))
-        if(newDragged !== undefined){
-            let draggedIndex = initialList.indexOf(newDragged);
-            newDragged.dragged=true;
-            setDragged(newDragged);
-            // setTargetHeight(newDragged.height)
-            initialList[draggedIndex]=newDragged;
-            // setNewElements(initialList);
-        }
+    const {elements} = props;
 
-    }
-    const swapElement=(e,index)=>{
-        e.preventDefault()
-        let dragIndex =elements.findIndex(({id})=> id === dragged.id);
-        let elems = Object.assign([],elements);
-        elems.splice(index,0,...elems.splice(dragIndex,1))
-        if(index === dragIndex){
-            setNewElements(elems)
-            return;
-        }
-        // console.log(dragged)
-        setNewElements(elems)
-        // props.updateElements(elems)
-    }
-    const sortElements=(elements)=>{
-        elements.sort((a, b)=>{
-            if((a.top) > b.top){
-                return 1
-            }
-            if((a.top) < (b.top)){
-                return -1
-            }
-            if((a.top) === (b.top)){
-                return 1
-            }
+    const sendResume=()=>{
+        let items = []
+        elements.forEach((elem,index)=>{
+             items.push({
+                item:elem,
+                // dateCreated:date,
+                position:index,
+                itemType:elem.type,
+            });
         })
-        return elements
-    }
-    const dropElement=(e)=>{
-        let elems = Object.assign([],newElements);
-        let dragIndex = elems.findIndex(({id})=>id=== dragged.id);
-        elems[dragIndex].dragged=undefined;
-        // console.log(elems[dragIndex]);
-        props.updateElements(elems)
+        fetch('http://localhost:8080/resume/getNewResume').then(res=>{
+            if(res.ok){
+                return res.json()
+            }else{
+                throw new Error("Not OK!");
+            }
+        }).then(res=>{
+            let date = new Date().toISOString()
+            let newContent = {
+                resumeItems:items,
+                dateCreated:date,
+            }
+            // console.log(newContent);
+            newContent.id=res.id;
+            fetch('http://localhost:8080/resume/resumes',{
+                method:"POST",
+                headers:{
+                    Accept:"application/json",
+                    "Content-Type":"application/json",
+                    // "Access-Control-Allow-Origin":"*",
+                },
+                body:JSON.stringify(newContent)
+            }).then(res=>{
+                console.log(res)
+            }).catch(err=>{
+                console.log(err);
+            })
+        }).catch(err=>{
+            console.log(err);
+        })
+
     }
     return(
         <>
-            <div>
-                <div className={"dropArea"} >
-                    {
-                        Object.values(newElements).map((content,index)=>{
-                            switch(content.type){
-                                case("experience"):
-                                    // console.log(content)
-                                    return(
-                                        <>
-                                            {/*<Marker/>*/}
-                                            <Draggable
-                                                content={content}
-                                                index={index}
-                                                updateElement={updateElement}
-                                                startDrag={startDrag}
-                                                stopDrag={dropElement}
-                                                dragged={content.dragged!==undefined?content.dragged:false}
-                                                swapElement={swapElement}
-                                            >
-                                                <Experience
-                                                    content={content}
-                                                />
-                                            </Draggable>
+            <input type={"button"} onClick={sendResume}/>
+            {
+                Object.values(elements).map((content,index)=>{
+                    console.log(content);
+                    switch(content.type){
+                        case("experience"):
+                            console.log(content)
+                            return(
+                                <Draggable
+                                    content={content}
+                                    index={index}
+                                    key={index}
+                                    startDrag={props.startDrag}
+                                    stopDrag={props.dropElem}
+                                    dragged={content.dragged!==undefined?content.dragged:false}
+                                    swapElement={props.swapElem}
+                                >
+                                    <Experience
+                                        key={index}
+                                        content={content}
+                                    />
+                                </Draggable>
+                            )
+                            break;
+                        case("skills"):
+                            return(
+                                <Draggable
+                                    content={content}
+                                    index={index}
+                                    key={index}
+                                    startDrag={props.startDrag}
+                                    stopDrag={props.dropElem}
+                                    dragged={content.dragged!==undefined?content.dragged:false}
+                                    swapElement={props.swapElem}
+                                >
+                                    <Skills
+                                        key={index}
+                                        content={content}
+                                    />
+                                </Draggable>
 
-                                        </>
-
-                                    )
-                                    break;
-                                case("skills"):
-                                    return(
-                                        <Skills
-                                            content={content}
-                                            index={index}
-                                            updateElement={updateElement}
-                                            startDrag={dragElement}
-                                            stopDrag={dropElement}
-
-                                        />
-                                    )
-                                    break;
-                                case("split"):
-                                    return(
-                                        <Split
-                                            index={index}
-                                            updateElement={updateElement}
-                                            startDrag={dragElement}
-                                            stopDrag={dropElement}
-                                            content={content}
-                                        />
-                                    )
-                                    break;
-
-                            }
-                        })}
-                </div>
-            </div>
+                            )
+                            break;
+                        case("split"):
+                            return(
+                                <Split
+                                    index={index}
+                                    key={index}
+                                    updateElement={updateElement}
+                                    startDrag={props.startDrag}
+                                    stopDrag={props.stopDrag}
+                                    content={content}
+                                />
+                            )
+                            break;
+                    }
+                })}
         </>
     )
 }export default ResumeContent;

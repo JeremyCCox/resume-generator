@@ -1,18 +1,19 @@
 body{
   background-color: palevioletred;
+  user-select: none;
 }
 .page-layout{
   display: flex;
   flex-wrap: nowrap;
 }
 .title{
-  flex-grow: 1;
-  max-width: max-content;
+  /*flex-grow: 1;*/
+  /*max-width: max-content;*/
 }
 .title-head{
   background-color: tan;
   max-width: max-content;
-  width: 360px;
+  width: 500px;
   display: grid;
   justify-content: space-between;
   font-family: monospace, sans-serif;
@@ -72,7 +73,8 @@ h1.bot-title{
 
 }
 .resume-body{
-  width:8.5in;
+  min-width:8.5in;
+  max-width: 8.5in;
   height: 11in;
   font-family: monospace, sans-serif;
   /*display: flex;*/
@@ -89,6 +91,7 @@ h1.bot-title{
 }
 .resume-editor{
   display: flex;
+  user-select: none;
 }
 .editor-panel{
   display: flex;
@@ -97,13 +100,21 @@ h1.bot-title{
   background-color: gold;
   flex-grow: 1;
 }
+.editor-title{
+  width: 100%;
+  background-color: greenyellow;
+  height: 40px;
+}
 
 .education{
   display: flex;
 }
 .experience{
   padding: 25px;
+  background-color: crimson;
+  min-height: 19px;
 }
+
 .experience > h5{
   margin: 0 5px;
   font-size: small;
@@ -217,15 +228,30 @@ h1.bot-title{
     transform: rotate(360deg);
   }
 }
-
-.draggable{
-  margin:10px 0 0 0  ;
-  border:solid 1px midnightblue;
-  width: 100%;
-  cursor:move;
-  user-select: none;
-  transition: all 1s ease-in-out 1s;
+.resume-body > .draggable{
+  min-width: 8.5in;
+  overflow: unset;
+  text-overflow: unset;
+  white-space: unset;
 }
+.editor-panel > .draggable{
+  /*width: 350px;*/
+  /*height: 100px;*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /*white-space: nowrap;*/
+}
+.draggable > h4,p,ul{
+  /*text-overflow: ellipsis;*/
+}
+
+/*.draggable{*/
+/*  margin:10px 0 0 0  ;*/
+/*  border:solid 1px midnightblue;*/
+/*  width: 100%;*/
+/*  cursor:move;*/
+/*  user-select: none;*/
+/*}*/
 .draggable[ondragover] {
   /*position: absolute;*/
   background-color: gold;
@@ -236,10 +262,11 @@ h1.bot-title{
 .bottom-half{
   background-color: red;
 }
-.draggable:active{
-  border: 5px dodgerblue solid;
-  filter: blur(1px);
-}
+
+/*.draggable:active{*/
+/*  border: 5px dodgerblue solid;*/
+/*  filter: blur(1px);*/
+/*}*/
 
 .spacer{
   border: 5px dodgerblue solid;

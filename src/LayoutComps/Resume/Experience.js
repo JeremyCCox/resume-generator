@@ -1,6 +1,7 @@
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {useResume} from "../../ContextHooks/useResumeContext";
 import Draggable from "./Draggable";
+import axios from "axios";
 
 function Experience(props){
     let {content,index} = props;
@@ -25,6 +26,36 @@ function Experience(props){
     //     stopDrag(e);
     //     // setHidden(false);
     // }
+    const sendExperience=()=>{
+        // axios.get("http://localhost:8080/resume/string",(req,res)=>{
+        //     res.header("Access-Control-Allow-Origin","*")
+        // }).then(res=>{
+        //     console.log(res);
+        // }).catch(err=>{
+        //     console.log(err);
+        // })
+        console.log(content);
+        let date = new Date().toISOString();
+        let newContent = {
+            item:content,
+            // dateCreated:date,
+            position:1,
+            itemType:"experience",
+        }
+        fetch('http://localhost:8080/resume/experience',{
+            method:"POST",
+            headers:{
+                Accept:"application/json",
+                "Content-Type":"application/json",
+                // "Access-Control-Allow-Origin":"*",
+            },
+            body:JSON.stringify(newContent)
+        }).then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
 
     return(
         // <Draggable >
@@ -35,10 +66,11 @@ function Experience(props){
                 <h5>{content.date}</h5>
                 <p>{content.description}</p>
                 <ul>
-                    {Object.values(content.tasks).map(task=>{
-                        return(<li key={task}>{task}</li>)
+                    {Object.values(content.items).map(item=>{
+                        return(<li key={item.description}>{item.description}</li>)
                     })}
                 </ul>
+                <input type={"button"} onClick={sendExperience}/>
             </div>
         // </Draggable>
 

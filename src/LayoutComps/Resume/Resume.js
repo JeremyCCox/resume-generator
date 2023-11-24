@@ -13,7 +13,6 @@ import resume from "./Resume";
 function Resume(){
     const [reportUri, setReportUri] = useState("")
     const [showReportModal, setShowReportModal] = useState(false)
-    const resume = useResume();
     const [exResume,setExResume] = useState(useResume().getExResume());
     const getPdf=()=>{
         return new Promise(resolve => {
@@ -23,7 +22,7 @@ function Resume(){
                     Accept:"application/pdf",
                     "Content-Type":"application/json",
                 },
-                body:JSON.stringify({type:"legal"}),
+                body:JSON.stringify({type:"experience"}),
             }).then(res=>{
                 console.log(res);
                 if(res.ok){
@@ -39,11 +38,6 @@ function Resume(){
             })
         })
 
-    }
-    const addHeight=(value)=>{
-        console.log(height)
-        console.log(value)
-        setHeight(height + value);
     }
     const showPdf=()=>{
         setReportUri("");
@@ -63,25 +57,12 @@ function Resume(){
             setReportUri(window.URL.createObjectURL(res))
         })
     }
-    const [cumHeight, setCumHeight]=useState()
-    useEffect(()=>{
-        // console.log(exResume.content)
-        calcTotalHeight()
-    },[exResume])
-    const calcTotalHeight=()=>{
-        let newCumHeight = 0;
-        exResume.content.forEach(value => {
-            if(value.hasOwnProperty("height")){
-                newCumHeight += value.height;
-            }
-        })
-        setCumHeight(newCumHeight);
-    }
 
     return(
         <>
-            <ResumeEditor>
-                <ResumeBody resume={[exResume,setExResume]}/>
+
+            <ResumeEditor resume={[exResume,setExResume]} >
+
             </ResumeEditor>
             <input type={"button"} value={"Get as PDF"} onClick={showPdf}/>
             <FullModal modalType={"reportModal"} show={showReportModal} setShow={setShowReportModal}>
