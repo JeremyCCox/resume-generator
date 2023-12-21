@@ -24,6 +24,13 @@ const OverlayButtons = styled.div`
     color:white;
   }
 `
+const OverlayMessage = styled.p`
+  margin: unset;
+  padding: 30px;
+  text-align: center;
+  position: fixed;
+`
+
 const FunctionalOverlay=styled.div`
   height: 100vh;
   //padding: 30px;
@@ -37,34 +44,29 @@ const FunctionalOverlay=styled.div`
   //background-color: rgba(120,120,120,0.4);
   //font-size: x-large;
 `
-const OverlayMessage = styled.p`
-  margin: unset;
-  padding: 30px;
-  text-align: center;
-  position: fixed;
-`
 
 
 function RequestOverlay(props){
+//Setting local variable to property passed from parent. Uses default value assigned if property is not passed, or passed property is undefined.
     let {message = "No message given!",display=true, toggleDisplay= ()=>{}} = props
-
+    // Reads ID to determine which background to display. setBackground is a placeholder function until background image can be set dynamically.
     const setBackground=(e)=>{
         props.setBackground(e.target.id)
     }
 
+    //Reads display prop. If true, displays the menu Overlay. If false displays functional Overlay, with props.children (nested XML elements) containing the positional inputs.
     if(display){
         return(
             <Overlay onClick={toggleDisplay}>
-                <OverlayButtons>
-                    <input type={"button"} value={"Calgary Skyline"} id={"1"} onClick={setBackground}/>
-                    {/*<input type={"button"} value={"Calgary Skyline"} id={"2"} onClick={setBackground}/>*/}
-                    <input type={"button"} value={"My office"} id={"3"} onClick={setBackground}/>
+                <OverlayButtons> 
+                    <input type={"button"} value={"Calgary Skyline"} id={"1"} onClick={setBackground}/> //Background one (Calgary Skyline)
+                    {/*<input type={"button"} value={"Calgary Skyline"} id={"2"} onClick={setBackground}/>*/} //Background two (Copyright image. Im no pirate)
+                    <input type={"button"} value={"My office"} id={"3"} onClick={setBackground}/> //Background three (360 office image)
                 </OverlayButtons>
-
-                {message}
+                {message}// message property
             </Overlay>
         )
-    }else{
+    }else{ // Display is false 
         return (
             <>
                 <FunctionalOverlay>
@@ -78,4 +80,4 @@ function RequestOverlay(props){
 
     }
 
-}export default RequestOverlay;
+}export default RequestOverlay; // Export the function as default Component (for import)
