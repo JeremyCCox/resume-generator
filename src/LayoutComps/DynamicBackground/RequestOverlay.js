@@ -59,11 +59,11 @@ function RequestOverlay(props){
         return(
             <Overlay onClick={toggleDisplay}>
                 <OverlayButtons> 
-                    <input type={"button"} value={"Calgary Skyline"} id={"1"} onClick={setBackground}/> //Background one (Calgary Skyline)
-                    {/*<input type={"button"} value={"Calgary Skyline"} id={"2"} onClick={setBackground}/>*/} //Background two (Copyright image. Im no pirate)
-                    <input type={"button"} value={"My office"} id={"3"} onClick={setBackground}/> //Background three (360 office image)
+                    <input type={"button"} value={"Calgary Skyline"} id={"1"} onClick={setBackground}/> {/*Background one (Calgary Skyline)*/}
+                    {/*<input type={"button"} value={"Calgary Skyline"} id={"2"} onClick={setBackground}/>*/} {/*Background two (Copyright image. Im no pirate)*/}
+                    <input type={"button"} value={"My office"} id={"3"} onClick={setBackground}/> {/*Background three (360 office image)*/}
                 </OverlayButtons>
-                {message}// message property
+                {message}{/* message property*/}
             </Overlay>
         )
     }else{ // Display is false 
