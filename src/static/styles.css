@@ -54,6 +54,9 @@ h1.bot-title{
 .title-link:hover{
   background:linear-gradient(.5turn , lightgray 0%,  grey 80%);
 }
+.home{
+  background-color: dodgerblue;
+}
 .closed{
   width: 1.6lh;
 }
@@ -97,7 +100,7 @@ h1.bot-title{
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  background-color: gold;
+  background-color: greenyellow;
   flex-grow: 1;
 }
 .editor-title{
@@ -111,7 +114,7 @@ h1.bot-title{
 }
 .experience{
   padding: 25px;
-  background-color: crimson;
+  /*background-color: crimson;*/
   min-height: 19px;
 }
 
@@ -233,6 +236,7 @@ h1.bot-title{
   overflow: unset;
   text-overflow: unset;
   white-space: unset;
+  animation-delay: 2s;
 }
 .editor-panel > .draggable{
   /*width: 350px;*/
@@ -267,8 +271,37 @@ h1.bot-title{
 /*  border: 5px dodgerblue solid;*/
 /*  filter: blur(1px);*/
 /*}*/
+.draggable{
+  border-width: 5px;
+  box-sizing: border-box;
+}
+.draggable> p{
 
+}
+.selected{
+  border: 5px dodgerblue solid;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  /*filter: blur(1px);*/
+}
 .spacer{
   border: 5px dodgerblue solid;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  filter: blur(1px);
+  /*min-height: 300px;*/
+}
+.dragged{
+  border: 5px dodgerblue solid;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
   filter: blur(1px);
 }
+.remove{
+  border-color: crimson;
+}
+
+

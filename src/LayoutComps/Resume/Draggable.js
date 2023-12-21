@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 
 function Draggable(props){
-    let {content,index,updateElement ,dragged,startDrag,duringDrag,stopDrag,swapElement = (e)=>{e.preventDefault()}} = props;
+    let {content,index,updateElement ,selected,toggleSelect=(e)=>{},dragged,startDrag,duringDrag,stopDrag,swapElement = (e)=>{e.preventDefault()}} = props;
     const [height, setHeight] = useState();
     const [top, setTop] = useState();
 
@@ -23,12 +23,16 @@ function Draggable(props){
         e.preventDefault();
         swapElement(e,index)
     }
-    useEffect(()=>{
-        // console.log("Draggable Content is:",content)
-    })
+    // useEffect(()=>{
+    //     console.log("Draggable Content is:",content)
+    // })
+    const select=()=>{
+        toggleSelect(content.id);
+    }
     return(
-        <div className={"draggable"} key={index+content.id} id={content.id} draggable={true} onDragEnd={stopDrag} onDragStart={startDrag} onDragOver={getDragInfo}  ref={heightRef}>
-            {dragged?<div className={"spacer"} >{props.children}</div>:props.children}
+        <div className={"draggable"} id={content.id} onClick={select} draggable={true} onDragEnd={stopDrag} onDragStart={startDrag} onDragOver={getDragInfo} ref={heightRef}>
+            {content.tag!==undefined?content.tag:null}
+            {dragged?<div className={"spacer "} onDragEnd={stopDrag} >{props.children}</div>:selected?<div className={"selected"}>{props.children}</div>:props.children}
             {/*{dragged?"true":"false"}*/}
             {/*{props.children}*/}
         </div>

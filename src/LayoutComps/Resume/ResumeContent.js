@@ -1,6 +1,6 @@
-import Experience from "./Experience";
-import Skills from "./Skills";
-import Split from "./Split";
+import Experience from "./ResumeItems/Experience";
+import Skills from "./ResumeItems/Skills";
+import Split from "./ResumeItems/Split";
 import {useEffect, useRef, useState} from "react";
 import {useResume} from "../../ContextHooks/useResumeContext";
 import Marker from "../Marker";
@@ -14,14 +14,6 @@ function ResumeContent(props){
 
     const sendResume=()=>{
         let items = []
-        elements.forEach((elem,index)=>{
-             items.push({
-                item:elem,
-                // dateCreated:date,
-                position:index,
-                itemType:elem.type,
-            });
-        })
         fetch('http://localhost:8080/resume/getNewResume').then(res=>{
             if(res.ok){
                 return res.json()
@@ -30,6 +22,15 @@ function ResumeContent(props){
             }
         }).then(res=>{
             let date = new Date().toISOString()
+            elements.forEach((elem,index)=>{
+                elem.position= index;
+                items.push({
+                    item:elem,
+                    // dateCreated:date,
+                    position:index,
+                    itemType:elem.type,
+                });
+            })
             let newContent = {
                 resumeItems:items,
                 dateCreated:date,
@@ -54,27 +55,47 @@ function ResumeContent(props){
         })
 
     }
+    const listAll=()=>{
+        fetch("http://localhost:8080/resume/all").then(res=>{
+            console.log(res);
+        })
+    }
+
     return(
         <>
-            <input type={"button"} onClick={sendResume}/>
+            <input type={"button"} onClick={sendResume} value={"send resume"}/>
+            <input type={"button"} onClick={listAll} value={"list all"}/>
+            {/*<Draggable*/}
+            {/*                content={item}*/}
+            {/*                startDrag={startDrag}*/}
+            {/*                stopDrag={dropElement}*/}
+            {/*                dragged={dragged.id===item.id}*/}
+            {/*                selected={selected.id===item.id}*/}
+            {/*                toggleSelect={toggleSelect}*/}
+            {/*                swapElement={swapElement}*/}
+            {/*                index={index}*/}
+            {/*                key={index}*/}
+            {/*            >*/}
+            {/*                <p>{item.text} index: {index}</p>*/}
+            {/*            </Draggable>*/}
             {
                 Object.values(elements).map((content,index)=>{
-                    console.log(content);
                     switch(content.type){
                         case("experience"):
-                            console.log(content)
                             return(
+
                                 <Draggable
                                     content={content}
                                     index={index}
                                     key={index}
                                     startDrag={props.startDrag}
                                     stopDrag={props.dropElem}
-                                    dragged={content.dragged!==undefined?content.dragged:false}
+                                    dragged={props.dragged.id === content.id}
                                     swapElement={props.swapElem}
+                                    selected={props.selected.id===content.id}
+                                    toggleSelect={props.toggleSelect}
                                 >
                                     <Experience
-                                        key={index}
                                         content={content}
                                     />
                                 </Draggable>
@@ -92,7 +113,6 @@ function ResumeContent(props){
                                     swapElement={props.swapElem}
                                 >
                                     <Skills
-                                        key={index}
                                         content={content}
                                     />
                                 </Draggable>

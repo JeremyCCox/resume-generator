@@ -20,7 +20,7 @@ function ResumeBody(props){
 
     return (
         <>
-            <div className={"resume-body"} onDragOver={props.addElement} onDrop={props.dropElement}>
+            <div className={"resume-body"} onDragOver={props.addElement}>
                 {/*{bodyHeight}*/}
                 <ResumeContact contact={resume.contact} />
                 <ResumeContent
@@ -30,6 +30,8 @@ function ResumeBody(props){
                     startDrag={props.startDrag}
                     dragged={props.dragged}
                     elements={props.elements}
+                    selected={props.selected}
+                    toggleSelect={props.toggleSelect}
 
                 />
             </div>

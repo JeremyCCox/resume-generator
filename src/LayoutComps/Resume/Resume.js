@@ -1,12 +1,12 @@
-import Experience from "./Experience";
-import Skills from "./Skills";
+import Experience from "./ResumeItems/Experience";
+import Skills from "./ResumeItems/Skills";
 import FullModal from "../Modal/FullModal";
 import Loading from "../Loading";
 import {useEffect, useState} from "react";
-import Split from "./Split";
+import Split from "./ResumeItems/Split";
 import ResumeContent from "./ResumeContent";
 import ResumeBody from "./ResumeBody";
-import ResumeEditor from "./ResumeEditor";
+import ResumeEditor from "./EditorComponents/ResumeEditor";
 import {useResume} from "../../ContextHooks/useResumeContext";
 import resume from "./Resume";
 
