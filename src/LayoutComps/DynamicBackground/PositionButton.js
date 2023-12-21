@@ -11,16 +11,21 @@ const PositionLabel = styled.label`
   }
 `
 
-
+// Position button component, 
 function PositionButton(props){
+    let {type = "reset"} =props;
 
+    // Calls handleHover function with type property, type property is used by reducer function to determine operation.
     const mouseEvent=()=>{
-        props.handleHover(props.type);
+        props.handleHover(type);
     }
+
+
     return(
-        <PositionLabel onMouseEnter={mouseEvent} onMouseOut={props.handleExit}>
+        <PositionLabel 
+onMouseEnter={mouseEvent} onMouseOut={props.handleExit}>
             {props.children}
             <input type={"button"} hidden={true}/>
         </PositionLabel>
     )
-}export default PositionButton;
+}export default PositionButton; \\ export Component as default.
