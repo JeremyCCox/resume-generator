@@ -63,7 +63,7 @@ function RequestOverlay(props){
                     {/*<input type={"button"} value={"Calgary Skyline"} id={"2"} onClick={setBackground}/>*/} {/*Background two (Copyright image. Im no pirate)*/}
                     <input type={"button"} value={"My office"} id={"3"} onClick={setBackground}/> {/*Background three (360 office image)*/}
                 </OverlayButtons>
-                {message}{/* message property*/}
+                {message} {/* message property*/}
             </Overlay>
         )
     }else{ // Display is false 
