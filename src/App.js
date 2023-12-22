@@ -24,23 +24,23 @@ function App(){
             <BrowserRouter>
                 <Routes>
                     <Route path={"/*"} element={
-                        <DevLayout/>
-                        // <Layout>
-                        //
-                        // </Layout>
-                    }>
-                        {/*<Route path={""}/>*/}
-                        {/*<Route path={"home"} element={<HomePage/>}/>*/}
-                        {/*<Route path={"resume"} element={*/}
-                        {/*    <ResumeProvider>*/}
-                        {/*        <Resume/>*/}
-                        {/*    </ResumeProvider>*/}
-                        {/*}/>*/}
-                        {/*<Route path={"dev"} element={<Dev/>}/>*/}
-                    </Route>
-                    {/*<Route path={"/layout"} element={<DevLayout/>}>*/}
+                        // <DevLayout/>
+                        <Layout>
 
-                    {/*</Route>*/}
+                        </Layout>
+                    }>
+                        <Route path={""}/>
+                        <Route path={"home"} element={<HomePage/>}/>
+                        <Route path={"resume"} element={
+                            <ResumeProvider>
+                                <Resume/>
+                            </ResumeProvider>
+                        }/>
+                        <Route path={"dev"} element={<Dev/>}/>
+                    </Route>
+                    <Route path={"/layout"} element={<DevLayout/>}>
+
+                    </Route>
                     {/*<Route element={<HttpChallenge>}/>*/}
                 </Routes>
             </BrowserRouter>

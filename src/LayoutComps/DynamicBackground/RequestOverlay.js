@@ -33,7 +33,9 @@ const OverlayMessage = styled.p`
 
 const FunctionalOverlay=styled.div`
   height: 100vh;
-  //padding: 30px;
+  cursor: ${props=> props.mouseMoving?"move":"default"}}
+
+//padding: 30px;
   //position: fixed;
   //margin: 30%;
   //text-align: center;
@@ -43,6 +45,14 @@ const FunctionalOverlay=styled.div`
   //align-items:;
   //background-color: rgba(120,120,120,0.4);
   //font-size: x-large;
+`
+const EscapeLabel = styled.label`
+  color:whitesmoke;
+  opacity: 50%;
+  margin: unset;
+  padding: 30px;
+  text-align: center;
+  position: fixed;
 `
 
 
@@ -69,10 +79,13 @@ function RequestOverlay(props){
     }else{ // Display is false 
         return (
             <>
-                <FunctionalOverlay>
-                    <OverlayMessage>
-                        [ ESC ] to exit
-                    </OverlayMessage>
+                <FunctionalOverlay mouseMoving={props.mouseMoving} >
+                    {/*<OverlayMessage>*/}
+                        <EscapeLabel>
+                            [ ESC ] to exit
+                            <input type={"button"} hidden={true} onClick={toggleDisplay}/>
+                        </EscapeLabel>
+                    {/*</OverlayMessage>*/}
                     {props.children}
                 </FunctionalOverlay>
             </>
