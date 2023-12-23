@@ -8,6 +8,7 @@ import {ResumeProvider} from "./ContextHooks/useResumeContext";
 import Dev from "./LayoutComps/Dev";
 import DevLayout from "./LayoutComps/DevLayout";
 import {createGlobalStyle} from "styled-components";
+import CYOABody from "./LayoutComps/ResumeCYOA/CYOABody";
 
 
 function App(){
@@ -36,6 +37,7 @@ function App(){
                                 <Resume/>
                             </ResumeProvider>
                         }/>
+                        <Route path={'cyoa/*'} element={<CYOABody/>}/>
                         <Route path={"dev"} element={<Dev/>}/>
                     </Route>
                     <Route path={"/layout"} element={<DevLayout/>}>

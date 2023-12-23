@@ -79,6 +79,11 @@ function Title(props){
                         Dev
                     </Link>
                 </label>
+                <label className={"title-link"} >
+                    <Link to={"cyoa"} >
+                        Choose your own Resume!
+                    </Link>
+                </label>
                 {/*<label className={"title-link"} >*/}
                 {/*    Text Here*/}
                 {/*    <input type={"button"} hidden={true} />*/}
