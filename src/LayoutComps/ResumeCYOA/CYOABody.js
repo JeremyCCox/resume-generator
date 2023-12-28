@@ -78,42 +78,6 @@ function CYOABody(){
                         )
                     })
                 }
-                {/*<CYOACard>*/}
-                {/*    <h3>Frontend</h3>*/}
-                {/*    <ul style={{transition: "opacity "+ (addList.length) + "s"}}>*/}
-                {/*        {Object.values(addList).map((elem,index)=>{*/}
-                {/*            return <li  style={{transition: "opacity "+ (index+1) + "s ease"}} >{elem}</li>*/}
-                {/*        })}*/}
-                {/*    </ul>*/}
-                {/*    <input type={"button"} id={"Frontend"} value={"Frontend"} hidden={true} onClick={pickCard}/>*/}
-                {/*</CYOACard>*/}
-                {/*<CYOACard>*/}
-                {/*    <h3>Backend</h3>*/}
-                {/*    <ul style={{transition: "opacity "+ (addList.length) + "s"}}>*/}
-                {/*        {Object.values(addList).map((elem,index)=>{*/}
-                {/*            return <li  style={{transition: "opacity "+ (index+1) + "s ease"}} >{elem}</li>*/}
-                {/*        })}*/}
-                {/*    </ul>*/}
-                {/*    <input type={"button"} id={"Backend"} value={"Backend"} hidden={true} onClick={pickCard}/>*/}
-                {/*</CYOACard>*/}
-                {/*<CYOACard>*/}
-                {/*    <h3>Full-stack</h3>*/}
-                {/*    <ul style={{transition: "opacity "+ (addList.length) + "s"}}>*/}
-                {/*        {Object.values(addList).map((elem,index)=>{*/}
-                {/*            return <li  style={{transition: "opacity "+ (index+1) + "s ease"}} >{elem}</li>*/}
-                {/*        })}*/}
-                {/*    </ul>*/}
-                {/*    <input type={"button"} id={"Fullstack"} value={"Full-stack"} hidden={true} onClick={pickCard}/>*/}
-                {/*</CYOACard>*/}
-                {/*<CYOACard>*/}
-                {/*    <h3>System Design</h3>*/}
-                {/*    <ul style={{transition: "opacity "+ (addList.length) + "s"}}>*/}
-                {/*        {Object.values(addList).map((elem,index)=>{*/}
-                {/*            return <li  style={{transition: "opacity "+ (index+1) + "s ease"}} >{elem}</li>*/}
-                {/*        })}*/}
-                {/*    </ul>*/}
-                {/*    <input type={"button"} id={"SystemDesign"} value={"System Design"} hidden={true} onClick={pickCard}/>*/}
-                {/*</CYOACard>*/}
             </CYOAContent>
             <input type={"button"} onClick={addElem}/>
         </CYOABase>
