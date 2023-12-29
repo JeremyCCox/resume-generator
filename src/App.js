@@ -7,9 +7,15 @@ import "./static/styles.css"
 import {ResumeProvider} from "./ContextHooks/useResumeContext";
 import Dev from "./LayoutComps/Dev";
 import DevLayout from "./LayoutComps/DevLayout";
-import {createGlobalStyle} from "styled-components";
+import styled, {createGlobalStyle} from "styled-components";
 import CYOABody from "./LayoutComps/ResumeCYOA/CYOABody";
+import {Outlet} from "react-router";
+import CYOACards from "./LayoutComps/ResumeCYOA/CYOACards";
+import CYOACategory from "./LayoutComps/ResumeCYOA/CYOACategory";
+import {CYOAProvider} from "./ContextHooks/useCYOAContext";
 
+const CYOABase=styled.div`
+`
 
 function App(){
     const GlobalStyle = createGlobalStyle`
@@ -37,7 +43,16 @@ function App(){
                                 <Resume/>
                             </ResumeProvider>
                         }/>
-                        <Route path={'cyoa/*'} element={<CYOABody/>}/>
+                        <Route path={"categories/*"}  element={
+                            <CYOAProvider>
+                                <CYOABody/>
+                            </CYOAProvider>
+                        }>
+                            <Route path={":category"} element={<CYOACategory/>}/>
+                            {/*<Route path={":category"} element={<CYOACategory/>}/>*/}
+                            {/*<Route path={""} element={<CYOACards/>}/>*/}
+                            {/*<Route path={""} element={<CYOABody/>}/>*/}
+                        </Route>
                         <Route path={"dev"} element={<Dev/>}/>
                     </Route>
                     <Route path={"/layout"} element={<DevLayout/>}>

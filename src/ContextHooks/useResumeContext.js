@@ -20,7 +20,7 @@ export const ResumeProvider=({children})=>{
         title:"Developer & IT Enthusiast",
         phone:"(587)-579-5248",
         email:"Jchristophercox@gmail.com",
-        address:"",
+        address:"1221 B Kensington Rd NW, Calgary, AB T2N 3P8",
     }
     const exResume={
         contact:Contact,

@@ -39,7 +39,7 @@ function BreadCrumbs(props){
     let {setPaths,paths =[]} = props;
     const getPath=(pathsLocation)=>{
         // console.log("Ran")
-        let path="/cyoa";
+        let path="";
         let subArr = paths.slice(0,parseInt(pathsLocation))
         Object.values(subArr).map(location=>{
             path+= "/"+location.location;

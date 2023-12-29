@@ -80,7 +80,7 @@ function Title(props){
                     </Link>
                 </label>
                 <label className={"title-link"} >
-                    <Link to={"cyoa"} >
+                    <Link to={"categories"} >
                         Choose your own Resume!
                     </Link>
                 </label>
