@@ -11,7 +11,6 @@ function CYOACategory(props){
     // const [paths,setPaths] = useOutletContext();
     let {cards, paths, setPaths} = props
     const {category}=useParams()
-    console.log(paths)
     return(
         <CYOACategoryBody>
             <CYOACategoryCards cards={cards}/>

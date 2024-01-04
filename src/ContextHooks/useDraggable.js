@@ -1,0 +1,145 @@
+import {createContext, useContext, useReducer, useState} from "react";
+
+
+function dragReducer(state,action){
+    switch (action.type){
+        case("insert"):
+            return(
+                [
+                    ...state,
+                    action.item
+                ]
+            )
+        case("insertAll"):
+            return(
+                [
+                    ...state,
+                    ...action.items,
+                ]
+            )
+        case("reset"):
+            return action.items
+
+        case ("delete"):
+            return(
+
+                state.filter(item=>{
+                    return item.id !== action.item.id;
+                })
+            )
+        case ("swap"):
+            let newState = Object.assign([],state);
+            newState.splice(action.itemIndex,0,...newState.splice(action.dragIndex,1))
+            return(
+                newState
+            )
+        case("move"):
+            let item = Object.assign({},state[action.index]);
+            action.send({type:"insert",item:item})
+            return(
+                state.filter(filter=>{
+                    return filter.id !== item.id;
+                })
+            )
+        case("tag"):
+            let list = Object.assign([],state);
+            list[action.index].tag=action.tag
+            return(
+                list
+            )
+        default:
+            return(state)
+
+    }
+}
+
+const DraggableContext = createContext(undefined, undefined);
+
+export const DraggableProvider=(props)=>{
+    const [elements, elementDispatch] = useReducer(dragReducer,[],undefined)
+    const [contentElements, contentElementDispatch]=useReducer(dragReducer,[],undefined)
+    const [dragged, setDragged] = useState({id:-1});
+
+    const startDrag=(e)=>{
+        // console.log(e)
+        if(e.target.className !== "draggable"){
+            return;
+        }
+        // let initialList = Object.assign([],elements)
+        let newDragged = elements.find(({id})=> id === parseInt(e.target.id))
+        // let newDragged = elements[e.target.id]
+        if(newDragged !== undefined){
+            // newDragged.dragged=true;
+            setDragged(newDragged);
+            // setSelected(newDragged)
+        }
+    }
+    const swapElement=(e,index)=>{
+        e.preventDefault()
+        let dragIndex =contentElements.findIndex(({id})=> id === dragged.id);
+        if(dragIndex>=0){
+            let elems = Object.assign([],elements);
+            elems.splice(index,0,...elems.splice(dragIndex,1))
+            contentElementDispatch({type:"swap",dragIndex:dragIndex,itemIndex:index})
+        }else{
+            // console.log("garh");
+            console.log(dragged)
+        }
+    }
+    const stopDrag=(e)=> {
+        e.preventDefault()
+        // let elems = Object.assign([], newElements);
+        // let dragIndex = elems.findIndex(({id}) => id === dragged.id);
+        setDragged({id: -1})
+    }
+    const addNewElement=(e)=>{
+        e.preventDefault()
+        let dragIndex = elements.findIndex(({id})=> id === dragged.id);
+        if(dragIndex >= 0 && contentElements.findIndex(({id})=> id === dragged.id) < 0){
+            contentElementDispatch({type:"insert",item:elements[dragIndex]})
+        }else{
+            // console.log("Drag index", dragIndex)
+            // console.log(contentElements.findIndex(({id})=> id === dragged.id))
+        }
+    }
+    const deleteElement=(e)=>{
+        console.log(e);
+        let item = elements.find(({id})=>id===dragged.id);
+        if(item!==undefined){
+            elementDispatch({type:"delete",item:item});
+        }
+    }
+    const toggleSelect=(itemId)=>{
+        console.log(itemId)
+        if(selected.id===itemId){
+            setSelected({id:0})
+        }else{
+            setSelected(sideElements.find(({id})=>id===itemId))
+        }
+    }
+    return(
+        <DraggableContext.Provider
+            value={
+                {
+                    elements,
+                    elementDispatch,
+                    contentElements,
+                    dragged,
+                    startDrag,
+                    swapElement,
+                    stopDrag,
+                    addNewElement,
+                    deleteElement,
+                    toggleSelect
+
+                }
+            }
+        >
+            {props.children}
+        </DraggableContext.Provider>
+    )
+}
+
+export const useDraggable=()=>{
+    return useContext(DraggableContext);
+}

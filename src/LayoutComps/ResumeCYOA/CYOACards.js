@@ -70,6 +70,8 @@ function CYOACards(props){
         setPaths(newPaths);
     }
 
+
+
     return(
         <CYOACardsBody>
             {

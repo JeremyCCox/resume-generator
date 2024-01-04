@@ -273,6 +273,7 @@ h1.bot-title{
 /*}*/
 .draggable{
   border-width: 5px;
+  padding: 20px;
   box-sizing: border-box;
 }
 .draggable> p{

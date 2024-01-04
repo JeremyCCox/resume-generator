@@ -13,6 +13,7 @@ import {Outlet} from "react-router";
 import CYOACards from "./LayoutComps/ResumeCYOA/CYOACards";
 import CYOACategory from "./LayoutComps/ResumeCYOA/CYOACategory";
 import {CYOAProvider} from "./ContextHooks/useCYOAContext";
+import {DraggableProvider} from "./ContextHooks/useDraggable";
 
 const CYOABase=styled.div`
 `
@@ -45,7 +46,9 @@ function App(){
                         }/>
                         <Route path={"categories/*"}  element={
                             <CYOAProvider>
-                                <CYOABody/>
+                                <DraggableProvider elements={"test1"}>
+                                    <CYOABody/>
+                                </DraggableProvider>
                             </CYOAProvider>
                         }>
                             <Route path={":category"} element={<CYOACategory/>}/>
@@ -53,11 +56,11 @@ function App(){
                             {/*<Route path={""} element={<CYOACards/>}/>*/}
                             {/*<Route path={""} element={<CYOABody/>}/>*/}
                         </Route>
-                        <Route path={"dev"} element={<Dev/>}/>
+                        <Route path={"dev"} element={<DraggableProvider elements={"test1"}><Dev/></DraggableProvider>}/>
                     </Route>
-                    <Route path={"/layout"} element={<DevLayout/>}>
+                    {/*<Route path={"/layout"} element={<DevLayout/>}>*/}
 
-                    </Route>
+                    {/*</Route>*/}
                     {/*<Route element={<HttpChallenge>}/>*/}
                 </Routes>
             </BrowserRouter>
