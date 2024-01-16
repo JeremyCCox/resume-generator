@@ -4,8 +4,8 @@ import Split from "./ResumeItems/Split";
 import {useEffect, useRef, useState} from "react";
 import {useResume} from "../../ContextHooks/useResumeContext";
 import Marker from "../Marker";
-import Draggable from "./Draggable";
-import draggable from "./Draggable";
+import Draggable from "./DraggableOld";
+import draggable from "./DraggableOld";
 import content from "../Content";
 
 

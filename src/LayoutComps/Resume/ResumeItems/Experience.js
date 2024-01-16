@@ -1,6 +1,6 @@
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {useResume} from "../../../ContextHooks/useResumeContext";
-import Draggable from "../Draggable";
+import Draggable from "../DraggableOld";
 import axios from "axios";
 
 function Experience(props){

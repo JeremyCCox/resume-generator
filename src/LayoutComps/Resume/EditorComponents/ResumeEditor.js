@@ -3,7 +3,7 @@ import {useEffect, useReducer, useState} from "react";
 import ResumeContent from "../ResumeContent";
 import EditorElement from "./EditorElement";
 import EditorPanel from "./EditorPanel";
-import Draggable from "../Draggable";
+import Draggable from "../DraggableOld";
 import Selectable from "../Selectable";
 import content from "../../Content";
 

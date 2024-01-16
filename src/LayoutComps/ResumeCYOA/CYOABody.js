@@ -7,10 +7,11 @@ import CYOACards from "./CYOACards";
 import Resume from "../Resume/Resume";
 import {useResume} from "../../ContextHooks/useResumeContext";
 import {useCYOA, useCYOAContext} from "../../ContextHooks/useCYOAContext";
-import ResumeBody from "../Resume/ResumeBody";
-import {useDraggable} from "../../ContextHooks/useDraggable";
-import DraggableCopy from "../Resume/DraggableCopy";
-import Draggable from "../Resume/Draggable";
+import Draggable from "../../Draggable/Draggable";
+import {useDraggable} from "../../Draggable/useDraggable";
+import CYOACategoryCards from "./CYOACategoryCards";
+import Loading from "../Loading";
+import FullModal from "../Modal/FullModal";
 
 
 const CYOABase=styled.div`
@@ -29,43 +30,59 @@ const Dropzone=styled.div`
   margin: 10px;
 `
 const DraggableElement = styled.div`
-  border: dashed black 2px;
-  min-height: 30px;
+  //border: dashed black 2px;
+  min-height: 50px;
   margin: 10px;
+  // position: ${props=> props.selected?"absolute":"relative"};
+  // top: ${props=> props.selected?"absolute":"relative"};
+  // bottom: ${props=> props.selected?"absolute":"relative"};
+  transition: 4s;
 `
 
 function CYOABody(){
     const [paths, setPaths] = useState([{location:"categories",title:"Main",teaserList:["One","Two","Three"]}])
     const CYOAProvider = useCYOA();
+    const [showModal, setShowModal] = useState(false)
+    const [reportUri,setReportUri ] = useState("")
+    const contact ={
+        type:"contact",
+        name:"Jeremy Cox",
+        title:"Developer & IT Enthusiast",
+        phone:"(587)-579-5248",
+        email:"Jchristophercox@gmail.com",
+        address:"1221 B Kensington Rd NW, Calgary, AB T2N 3P8",
+    }
     const [cards, setCards] = useState([
         {location:"frontend",title:"Front End",teaserList:["One","Two","Three"],
             list:[
                 {
                     id:0,
                     title:"WRAP - Desktop Application",
-                    desc:"React APP converted to Desktop Application with Electron.js",
+                    description:"React APP converted to Desktop Application with Electron.js",
                     items:[
-                        "Complete user experience overhaul",
-                        "Visual redesign",
-                        "Used IndexedDB for offline data persistence"
+                        {description: "Complete user experience overhaul"},
+                        {description:"Visual redesign"},
+                        {description:"Used IndexedDB for offline data persistence"}
                     ]
                 },
                 {
                     id:1,
                     title:"WRAP - Report Generation",
-                    desc:"Thymeleaf Template Engine - Server Side Rendering",
+                    type:"experience",
+                    description:"Thymeleaf Template Engine - Server Side Rendering",
                     items:[
-                        "Designed report templates",
-                        "Dynamic report generation from Database & User-submitted data",
+                        {description:"Designed report templates"},
+                        {description:"Dynamic report generation from Database & User-submitted data"},
                     ]
                 },
                 {
                     id:2,
                     title:"Dynamic Background Project",
-                    desc:"React APP for dynamic backgrounds",
+                    type:"experience",
+                    description:"React APP for dynamic backgrounds",
                     items:[
-                        "Uses Styled-Components",
-                        "Desktop & Mobile functionality",
+                        {description:"Uses Styled-Components"},
+                        {description:"Desktop & Mobile functionality"},
                     ]
                 },
 
@@ -75,63 +92,102 @@ function CYOABody(){
                 {
                     id:3,
                     title:"WRAP - Spring MVC Backend",
-                    desc:"User Authentication, Report Generation & Data Access/Persistence. ",
+                    type:"experience",
+                    description:"User Authentication, Report Generation & Data Access/Persistence. ",
                     items:[
-                        "JPA/CRUD Repository Model configured with Postgres Database",
-                        "Spring Security, With JWT and HTTPS",
-                        "Dynamic report generation with Thymeleaf",
+                        {description:"JPA/CRUD Repository Model configured with Postgres Database"},
+                        {description:"Spring Security, With JWT and HTTPS"},
+                        {description:"Dynamic report generation with Thymeleaf"},
                     ]
                 },
                 {
                     id:4,
                     title:"Atzin, Mexico — MikroTik Configuration",
+                    type:"experience",
                     // date:"MAY 2022 - AUG 2022",
-                    desc:"Custom configuration on MikroTik hAP mini for managed wireless access.",
+                    description:"Custom configuration on MikroTik hAP mini for managed wireless access.",
                     items:[
-                        "User management & Authentication scripts",
-                        "Setup RADIUS - not implemented due to network concerns",
-                        "Network configuration",
+                        {description:"User management & Authentication scripts"},
+                        {description:"Setup RADIUS - not implemented due to network concerns"},
+                        {description:"Network configuration"},
                     ],
                 },
                 {
                     id:5,
-                    title:"Joe's Bicycle Garage",
-                    desc:"Consulted Joe's Bicycle Garage on their needs, costs and the feasibility of implementing a rental service",
+                    title:"Simple Music Display",
+                    type:"experience",
+                    description:"Nextjs Audio file storage & streaming service",
                     items:[
-                        "Designed a prototype bicycle rental service",
-                        "Analyzed & tested competing services",
-                        "Implemented Booqable rental service in wordpress"
+                        {description:"Using Mongodb Nextjs Drivers"},
+                        {description:"Used Pages routing & App router"},
+                        {description:"File Metadata access and manipulation"},
+                        {description:"Audio storage and streaming"}
                     ]
-                },
+                }
+                // {
+                //     id:5,
+                //     title:"Joe's Bicycle Garage",
+                //     description:"Consulted Joe's Bicycle Garage on their needs, costs and the feasibility of implementing a rental service",
+                //     items:[
+                //         "Designed a prototype bicycle rental service",
+                //         "Analyzed & tested competing services",
+                //         "Implemented Booqable rental service in wordpress"
+                //     ]
+                // },
 
             ]},
         {location:"database",title:"Database",teaserList:["One","Two","Three"],
             list:[
                 {
                     id:6,
-                    title:"Atzin, Mexico — MikroTik Configuration",
+                    title:"WRAP - Postgres Database",
+                    type:"experience",
                     // date:"MAY 2022 - AUG 2022",
-                    desc:"Custom configuration on MikroTik hAP mini for managed wireless access.",
+                    description:"Migrated Microsoft Access data to Postgresql, and augmented the schema for the WRAP application",
                     items:[
-                        "User management & Authentication scripts",
-                        "Setup RADIUS - not implemented due to network concerns",
-                        "Network configuration",
+                        {description: "User management & Authentication scripts"},
+                        {description:"Setup RADIUS - not implemented due to network concerns"},
+                        {description:"Network configuration"},
                     ],
                 },
                 {
                     id:7,
-                    title:"Joe's Bicycle Garage",
-                    desc:"Consulted Joe's Bicycle Garage on their needs, costs and the feasibility of implementing a rental service",
+                    title:"",
+                    type:"experience",
+                    description:"Consulted Joe's Bicycle Garage on their needs, costs and the feasibility of implementing a rental service",
                     items:[
-                        "Designed a prototype bicycle rental service",
-                        "Analyzed & tested competing services",
-                        "Implemented Booqable rental service in wordpress"
+                        {description:"Designed a prototype bicycle rental service"},
+                        {description:"Analyzed & tested competing services"},
+                        {description:"Implemented Booqable rental service in wordpress"}
                     ]
                 },
             ]
         }
     ]);
-
+    const doTest = ()=>{
+        let resume = {
+            resumeItems :[contact,...draggable.getElements()],
+        }
+        // resume.resumeItems.push(contact)
+        fetch("http://localhost:8080"+"/thymeleaf/resume",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(resume)
+        }).then(res=>{
+            console.log(res)
+            if(res.ok){
+                return res.blob()
+            }
+        }).then(data=> {
+            let report = new Blob([data], {type:'application/pdf'})
+            setReportUri(window.URL.createObjectURL(report))
+            setShowModal(true)
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
     const draggable = useDraggable();
 
     useEffect(()=>{
@@ -151,31 +207,41 @@ function CYOABody(){
     return(
         <CYOABase>
             <BreadCrumbs setPaths={setPaths} paths={paths}/>
-            {/*<CYOAContent >*/}
+            <input type={"button"} onClick={doTest}/>
+            <input type={"button"} onClick={()=>setShowModal(!showModal)}/>
                 <CYOACards  paths={paths} setPaths={setPaths}/>
-            {/*</CYOAContent>*/}
-                <CYOACategory cards={cards} paths={paths} setPaths={setPaths}/>
-            {/*<CYOAContent >*/}
-            {/*    <Outlet context={[paths,setPaths]} />*/}
-            {/*</CYOAContent>*/}
+
+                {/*<CYOACategory cards={cards} paths={paths} setPaths={setPaths}/>*/}
+                <CYOACategoryCards cards={cards}/>
             <Dropzone onDragOver={draggable.addNewElement}>
                 {Object.values(draggable.contentElements).map((element,index)=>{
                     return(
-                        <DraggableCopy
+                        <Draggable
                             content={element}
+                            mouse={draggable.mouse}
                             index={index}
                         >
-                                {element.desc}
-                            {/*<CYOACategoryOption>*/}
 
-                            {/*</CYOACategoryOption>*/}
-                        </DraggableCopy>
+                            <DraggableElement id={element.id} selected={draggable.dragged.id === element.id}>
+                                {element.description}
+                            </DraggableElement>
+                        </Draggable>
                         // <p> {element.desc}</p>
                     )
                 })}
             </Dropzone>
-
             {/*<input type={"button"} onClick={addElem}/>*/}
+            <FullModal modalType={"reportModal"} show={showModal} setShow={setShowModal}>
+                {(reportUri === null || reportUri === "")?
+                    <Loading/>
+                    :
+                    <>
+                        <iframe src={reportUri}></iframe>
+                        {/*<input type={"button"} onClick={clearPdf} value={"Clear PDF"}/>*/}
+                        {/*<input type={"button"} onClick={refreshPDF} value={"Refresh PDF "}/>*/}
+                    </>
+                }
+            </FullModal>
         </CYOABase>
     )
 }export default CYOABody;

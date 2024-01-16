@@ -1,4 +1,4 @@
-import Draggable from "../Draggable";
+import Draggable from "../DraggableOld";
 import Experience from "../ResumeItems/Experience";
 import Skills from "../ResumeItems/Skills";
 import Split from "../ResumeItems/Split";

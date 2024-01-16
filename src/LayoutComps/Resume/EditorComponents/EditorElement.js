@@ -1,4 +1,4 @@
-import Draggable from "../Draggable";
+import Draggable from "../DraggableOld";
 import {useEffect} from "react";
 import Selectable from "../Selectable";
 

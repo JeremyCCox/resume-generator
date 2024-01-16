@@ -13,7 +13,7 @@ import {Outlet} from "react-router";
 import CYOACards from "./LayoutComps/ResumeCYOA/CYOACards";
 import CYOACategory from "./LayoutComps/ResumeCYOA/CYOACategory";
 import {CYOAProvider} from "./ContextHooks/useCYOAContext";
-import {DraggableProvider} from "./ContextHooks/useDraggable";
+import {DraggableProvider} from "./Draggable/useDraggable";
 
 const CYOABase=styled.div`
 `
@@ -56,7 +56,7 @@ function App(){
                             {/*<Route path={""} element={<CYOACards/>}/>*/}
                             {/*<Route path={""} element={<CYOABody/>}/>*/}
                         </Route>
-                        <Route path={"dev"} element={<DraggableProvider elements={"test1"}><Dev/></DraggableProvider>}/>
+                        <Route path={"dev"} element={<DraggableProvider><Dev/></DraggableProvider>}/>
                     </Route>
                     {/*<Route path={"/layout"} element={<DevLayout/>}>*/}
 

@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 
-function Draggable(props){
+function DraggableOld(props){
     let {content,index,updateElement ,selected,toggleSelect=(e)=>{},dragged,startDrag,duringDrag,stopDrag,swapElement = (e)=>{e.preventDefault()}} = props;
     const [height, setHeight] = useState();
     const [top, setTop] = useState();
@@ -37,4 +37,4 @@ function Draggable(props){
             {/*{props.children}*/}
         </div>
     )
-}export default Draggable;
+}export default DraggableOld;

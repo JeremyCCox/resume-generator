@@ -81,7 +81,10 @@ function CYOACards(props){
 
                     }
                     return(
-                        <CYOACard height={category ===undefined?"30vh":category===card.location?"15vh":"10vh"} categorySelected={category===undefined}>
+                        <CYOACard
+                            height={category ===undefined?"30vh":category===card.location?"15vh":"10vh"}
+                            categorySelected={category===undefined}
+                        >
                             <h3>{card.title}</h3>
                             <ul style={{transition: "opacity "+ (card.teaserList.length) + "s"}}>
                                 {Object.values(card.teaserList).map((elem,index)=>{

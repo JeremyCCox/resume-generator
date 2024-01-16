@@ -1,4 +1,4 @@
-import {createContext, useContext, useReducer, useState} from "react";
+import {createContext, useContext, useEffect, useReducer, useState} from "react";
 
 
 function dragReducer(state,action){
@@ -6,8 +6,9 @@ function dragReducer(state,action){
         case("insert"):
             return(
                 [
+                    action.item,
                     ...state,
-                    action.item
+
                 ]
             )
         case("insertAll"):
@@ -59,20 +60,35 @@ export const DraggableProvider=(props)=>{
     const [elements, elementDispatch] = useReducer(dragReducer,[],undefined)
     const [contentElements, contentElementDispatch]=useReducer(dragReducer,[],undefined)
     const [dragged, setDragged] = useState({id:-1});
+    const [selected, setSelected] = useState({id:-1});
+    const [mouseMoveEvent,setMouseMoveEvent] = useState(false);
+    const [mouse, setMouse] = useState({});
 
     const startDrag=(e)=>{
-        // console.log(e)
-        if(e.target.className !== "draggable"){
-            return;
-        }
+        console.log(e.target.id)
+        // if(e.target.className !== "draggable"){
+        //     return;
+        // }
         // let initialList = Object.assign([],elements)
         let newDragged = elements.find(({id})=> id === parseInt(e.target.id))
         // let newDragged = elements[e.target.id]
         if(newDragged !== undefined){
             // newDragged.dragged=true;
             setDragged(newDragged);
+            setMouseMoveEvent(true)
             // setSelected(newDragged)
         }
+    }
+    useEffect(()=>{
+        if(mouseMoveEvent){
+            window.addEventListener('mousemove',moveElement,true)
+        }
+        return()=>{
+            window.removeEventListener('mousemove',moveElement,true)
+        }
+    },[mouseMoveEvent])
+    const moveElement =(e)=>{
+        setMouse({x: e.clientX , y: e.clientY})
     }
     const swapElement=(e,index)=>{
         e.preventDefault()
@@ -82,8 +98,8 @@ export const DraggableProvider=(props)=>{
             elems.splice(index,0,...elems.splice(dragIndex,1))
             contentElementDispatch({type:"swap",dragIndex:dragIndex,itemIndex:index})
         }else{
-            // console.log("garh");
-            console.log(dragged)
+            console.log("garh");
+            // console.log(dragged)
         }
     }
     const stopDrag=(e)=> {
@@ -91,19 +107,21 @@ export const DraggableProvider=(props)=>{
         // let elems = Object.assign([], newElements);
         // let dragIndex = elems.findIndex(({id}) => id === dragged.id);
         setDragged({id: -1})
+        setMouseMoveEvent(false)
     }
     const addNewElement=(e)=>{
         e.preventDefault()
         let dragIndex = elements.findIndex(({id})=> id === dragged.id);
         if(dragIndex >= 0 && contentElements.findIndex(({id})=> id === dragged.id) < 0){
             contentElementDispatch({type:"insert",item:elements[dragIndex]})
+            setMouseMoveEvent(false)
         }else{
             // console.log("Drag index", dragIndex)
             // console.log(contentElements.findIndex(({id})=> id === dragged.id))
         }
     }
     const deleteElement=(e)=>{
-        console.log(e);
+        // console.log(e);
         let item = elements.find(({id})=>id===dragged.id);
         if(item!==undefined){
             elementDispatch({type:"delete",item:item});
@@ -112,11 +130,15 @@ export const DraggableProvider=(props)=>{
     const toggleSelect=(itemId)=>{
         console.log(itemId)
         if(selected.id===itemId){
-            setSelected({id:0})
+            setSelected({id:-1})
         }else{
-            setSelected(sideElements.find(({id})=>id===itemId))
+            setSelected(elements.find(({id})=>id===itemId))
         }
     }
+    const getElements=()=>{
+        return(contentElements)
+    }
+
     return(
         <DraggableContext.Provider
             value={
@@ -124,7 +146,10 @@ export const DraggableProvider=(props)=>{
                     elements,
                     elementDispatch,
                     contentElements,
+                    getElements,
                     dragged,
+                    selected,
+                    mouse,
                     startDrag,
                     swapElement,
                     stopDrag,
