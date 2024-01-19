@@ -1,7 +1,8 @@
 // import Draggable from "./Resume/DraggableOld";
 import Draggable from "../Draggable/Draggable";
-import {useEffect, useReducer} from "react";
+import {useCallback, useEffect, useReducer, useRef, useState} from "react";
 import {useDraggable} from "../Draggable/useDraggable";
+import styled from "styled-components";
 function reducer(state,action){
     if(action.type === 'add'){
         return(
@@ -20,51 +21,77 @@ function reducer(state,action){
         )
     }
 }
-
-function Dev(){
-    const [state, dispatch] = useReducer(reducer,[{id:0}]);
-    const [state1, dispatch1] = useReducer(reducer,[]);
-    const draggable = useDraggable();
-    let nave = document.getElementById("nav");
-    const doubleDispatch =()=>{
-        if(state.length === 0){
-            dispatch({type:'add'})
-            dispatch1({type:'delete',item:{id:state1[state1.length-1].id}})
-        }else{
-            dispatch1({type:'add'})
-            dispatch({type:'delete',item:{id:state[state.length-1].id}})
-        }
+const Point = styled.div.attrs($props=>({
+    style:{
+        top: $props.top+"px",
+        left: $props.left+"px",
     }
+}))`
+  height: 4px;
+  width: 4px;
+  position: absolute;
+  background-color: green;
+`
+
+
+const pointReducer= (state,action)=>{
+    switch (action.type){
+        case("add"):
+            return[...state,action.point]
+    }
+}
+function Dev(){
+    const [points, pointDispatch] = useReducer(pointReducer, [], undefined);
+    const [mouseDown, setMouseDown] = useState(false)
+    const [draw, toggleDraw] = useState(false)
+    const canvasRef = useRef()
+    const [maxTop,setMaxTop] = useState(0);
+    const [maxBottom,setMaxBottom] = useState(0);
+    const [maxLeft,setMaxLeft] = useState(0);
+    const [maxRight,setMaxRight] = useState(0);
     useEffect(()=>{
-        draggable.elementDispatch({type:"insertAll",items:[{id: 0}]})
-    },[])
+        setMaxTop(canvasRef.current.offsetTop)
+        setMaxBottom(canvasRef.current.offsetTop+canvasRef.current.offsetHeight)
+        setMaxLeft(canvasRef.current.offsetLeft)
+        setMaxRight(canvasRef.current.offsetLeft + canvasRef.current.offsetWidth)
+    },[canvasRef])
+    const drawPixel=useCallback((e)=>{
+        if(e.pageX > maxLeft && e.pageX < maxRight && e.pageY > maxTop && e.pageY < maxBottom){
+            pointDispatch({type:"add",point:[e.pageY,e.pageX]})
+        }
+    },[draw])
+
+    useEffect(()=>{
+        if(draw){
+            window.addEventListener("mousedown", ()=>setMouseDown(true))
+            window.addEventListener("mouseup",()=>setMouseDown(false))
+
+        }
+        return()=>{
+            window.removeEventListener('mousedown', ()=>setMouseDown(true))
+            window.removeEventListener("mouseup",()=>setMouseDown(false))
+        }
+    },[draw])
+    useEffect(()=>{
+        if(mouseDown){
+            window.addEventListener("mousemove", drawPixel)
+        }
+        return()=> {
+            window.removeEventListener("mousemove", drawPixel)
+        }
+    },[mouseDown])
+
     return(
         <>
-            {/*test*/}
-
-            {/*<nav id={"nav"}>*/}
-
-            {/*</nav>*/}
-            {/*<p>*/}
-            {/*    Count: {state.length}*/}
-            {/*</p>*/}
-            {/*<p>*/}
-            {/*    Count: {state1.length}*/}
-            {/*</p>*/}
-            {/*<input type={"button"} onClick={()=>{*/}
-            {/*    dispatch({type:'add'})*/}
-            {/*}}/>*/}
-            {/*<input type={"button"} onClick={()=>console.log(nav)} value={"Text "}/>*/}
-            <div>
-                <Draggable
-                    content={{id: 0}}
-                >
-                    <p>
-                        Text
-                        Text
-                    </p>
-                </Draggable>
-            </div>
+            {Object.values(points).map(point=>{
+                return(<Point top={point[0]} left={point[1]}/>)
+            })}
+            <DevDiv ref={canvasRef} onMouseEnter={()=>toggleDraw(true)} onMouseLeave={()=>toggleDraw(false)}>
+            </DevDiv>
         </>
     )
 }export default Dev;
+const DevDiv = styled.div`
+  height: 2000px;    
+  z-index: 1;
+`
