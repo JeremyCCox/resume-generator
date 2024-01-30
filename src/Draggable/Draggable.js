@@ -6,9 +6,9 @@ import {useDraggable} from "./useDraggable";
 
 
 const DraggableDiv = styled.div`
-  border: ${props=> props.selected?"peachpuff solid 4px":"peachpuff solid 2px"};
-  border-radius: 5px;
-  padding: ${props=> props.selected?"18px":"20px"};
+  // border: ${props=> props.selected?"blue solid 4px":"peachpuff solid 2px"};
+  // border-radius: 5px;
+  // padding: ${props=> props.selected?"18px":"20px"};
   height: fit-content;
   box-sizing: border-box;
   &:hover{

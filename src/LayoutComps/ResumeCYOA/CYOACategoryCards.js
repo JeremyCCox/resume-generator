@@ -21,6 +21,15 @@ const CYOACategoryCard = styled.div`
   transition:${props=> props.selected?"opacity ease-in 2s, width 0s, left 1s linear":"opacity ease-out 2s, left 1s linear , width 0s 2s"};
 `
 const CYOACategoryOption = styled.div`
+  border: ${props=> props.selected?"blue solid 4px":"peachpuff solid 2px"};
+  border-radius: 5px;
+  padding: ${props=> props.selected?"18px":"20px"};
+  height: 25px;
+  &:hover{
+    height: 120px;
+    transition: height 2s .5s;
+  }
+  transition: height 1s;
   //outline: lightblue;
   //margin: 15px;
 `
@@ -43,13 +52,13 @@ function CYOACategoryCards(props){
             {Object.values(cards).map(card=>{
                 // console.log(card)
                 return(
-                    <CYOACategoryCard selected={card.location===category} >
+                    <CYOACategoryCard selected={card.location===category} on>
                         {Object.values(card.list).map((element,index)=>{
                             return(
                                 <Draggable
                                     content={element}
                                 >
-                                    <CYOACategoryOption id={element.id}>
+                                    <CYOACategoryOption id={element.id} onDoubleClick={draggable.addNewElement}>
                                         {element.description}
                                     </CYOACategoryOption>
                                 </Draggable>

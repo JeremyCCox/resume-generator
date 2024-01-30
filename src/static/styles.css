@@ -1,6 +1,7 @@
 body{
   background-color: palevioletred;
   user-select: none;
+  overflow-x: hidden;
 }
 .page-layout{
   display: flex;

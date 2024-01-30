@@ -12,6 +12,9 @@ import {useDraggable} from "../../Draggable/useDraggable";
 import CYOACategoryCards from "./CYOACategoryCards";
 import Loading from "../Loading";
 import FullModal from "../Modal/FullModal";
+import ColoredButtons from "../Inputs/ColoredButtons";
+import PageSizes from "../Inputs/PageSizes";
+import PhotoSelect from "../Inputs/PhotoSelect";
 
 
 const CYOABase=styled.div`
@@ -26,17 +29,34 @@ const CYOAContent=styled.div.attrs(props=>({
 `
 const Dropzone=styled.div`
   border: dashed black 2px;
-  min-height: 30px;
-  margin: 10px;
+  //min-height: 30px;
+  //margin: 10px;
+  min-width:4.25in;
+  max-width: 8.5in;
+  //max-height: 11in;
+  width: auto;
+  //height: auto;
+  min-height: 5.5in;
+  font-family: monospace, sans-serif;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*flex-wrap: wrap;*/
+  background-color: ${props=>props.color};
+  padding: 15px;
+  margin:auto;
 `
 const DraggableElement = styled.div`
+  border: ${props=> props.selected?"blue solid 2px":"peachpuff solid 2px"};
+  outline: ${props=> props.selected?"blue solid 2px":"transparent solid 2px"};
+  border-radius: 5px;
+  padding: 20px;
   //border: dashed black 2px;
   min-height: 50px;
   margin: 10px;
   // position: ${props=> props.selected?"absolute":"relative"};
   // top: ${props=> props.selected?"absolute":"relative"};
   // bottom: ${props=> props.selected?"absolute":"relative"};
-  transition: 4s;
+  transition: .2s;
 `
 
 function CYOABody(){
@@ -58,6 +78,7 @@ function CYOABody(){
                 {
                     id:0,
                     title:"WRAP - Desktop Application",
+                    type:"experience",
                     description:"React APP converted to Desktop Application with Electron.js",
                     items:[
                         {description: "Complete user experience overhaul"},
@@ -72,7 +93,7 @@ function CYOABody(){
                     description:"Thymeleaf Template Engine - Server Side Rendering",
                     items:[
                         {description:"Designed report templates"},
-                        {description:"Dynamic report generation from Database & User-submitted data"},
+                        {description:"Dynamic report generation using Database & User-submitted data"},
                     ]
                 },
                 {
@@ -164,8 +185,15 @@ function CYOABody(){
             ]
         }
     ]);
+    const refreshPDF = ()=>{
+        setReportUri("")
+        doTest()
+    }
     const doTest = ()=>{
         let resume = {
+            pageSize:pageSize,
+            pageColor:pageColor,
+            photoSelect:photo,
             resumeItems :[contact,...draggable.getElements()],
         }
         // resume.resumeItems.push(contact)
@@ -189,7 +217,9 @@ function CYOABody(){
         })
     }
     const draggable = useDraggable();
-
+    const [pageSize , setPageSize ]= useState("letter")
+    const [pageColor,setPageColor] = useState("white")
+    const [photo, setPhoto] = useState(0)
     useEffect(()=>{
         let items=[]
         console.log(cards)
@@ -203,17 +233,16 @@ function CYOABody(){
     //     newList.push("New Item "+(newList.length+1))
     //     setAddList(newList)
     // }
-
     return(
         <CYOABase>
-            <BreadCrumbs setPaths={setPaths} paths={paths}/>
+            {/*<BreadCrumbs setPaths={setPaths} paths={paths}/>*/}
+            <CYOACards  paths={paths} setPaths={setPaths}/>
+            <CYOACategoryCards cards={cards}/>
             <input type={"button"} onClick={doTest}/>
-            <input type={"button"} onClick={()=>setShowModal(!showModal)}/>
-                <CYOACards  paths={paths} setPaths={setPaths}/>
-
-                {/*<CYOACategory cards={cards} paths={paths} setPaths={setPaths}/>*/}
-                <CYOACategoryCards cards={cards}/>
-            <Dropzone onDragOver={draggable.addNewElement}>
+            <PhotoSelect selected={[photo,setPhoto]}/>
+            <ColoredButtons handleClick={e=>setPageColor(e.target.id)}/>
+            <PageSizes backgroundColor={pageColor} handleClick={e=>setPageSize(e.target.id)} selected={pageSize}/>
+            <Dropzone onDragOver={draggable.addNewElement} color={pageColor} pagesize={pageSize}>
                 {Object.values(draggable.contentElements).map((element,index)=>{
                     return(
                         <Draggable
@@ -222,8 +251,12 @@ function CYOABody(){
                             index={index}
                         >
 
-                            <DraggableElement id={element.id} selected={draggable.dragged.id === element.id}>
-                                {element.description}
+                            <DraggableElement id={element.id} selected={draggable.dragged.id === element.id} onDoubleClick={draggable.deleteElement}>
+                                <h3>{element.title}</h3>
+                                <p>{element.description}</p>
+                                {Object.values(element.items).map(listItem =>{
+                                    return(<li><span>{listItem.description}</span></li>)
+                                })}
                             </DraggableElement>
                         </Draggable>
                         // <p> {element.desc}</p>
@@ -238,7 +271,7 @@ function CYOABody(){
                     <>
                         <iframe src={reportUri}></iframe>
                         {/*<input type={"button"} onClick={clearPdf} value={"Clear PDF"}/>*/}
-                        {/*<input type={"button"} onClick={refreshPDF} value={"Refresh PDF "}/>*/}
+                        <input type={"button"} onClick={refreshPDF} value={"Refresh PDF "}/>
                     </>
                 }
             </FullModal>

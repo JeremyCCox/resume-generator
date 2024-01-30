@@ -23,7 +23,6 @@ function dragReducer(state,action){
 
         case ("delete"):
             return(
-
                 state.filter(item=>{
                     return item.id !== action.item.id;
                 })
@@ -111,21 +110,32 @@ export const DraggableProvider=(props)=>{
     }
     const addNewElement=(e)=>{
         e.preventDefault()
-        let dragIndex = elements.findIndex(({id})=> id === dragged.id);
-        if(dragIndex >= 0 && contentElements.findIndex(({id})=> id === dragged.id) < 0){
-            contentElementDispatch({type:"insert",item:elements[dragIndex]})
-            setMouseMoveEvent(false)
+        if(e.type=== "dblclick"){
+            if(contentElements.findIndex(({id})=> id === parseInt(e.target.id)) < 0){
+                contentElementDispatch({type:"insert",item:elements[e.target.id]})
+            }
+
         }else{
-            // console.log("Drag index", dragIndex)
-            // console.log(contentElements.findIndex(({id})=> id === dragged.id))
+            let dragIndex = elements.findIndex(({id})=> id === dragged.id);
+            if(dragIndex >= 0 && contentElements.findIndex(({id})=> id === dragged.id) < 0){
+                contentElementDispatch({type:"insert",item:elements[dragIndex]})
+                setMouseMoveEvent(false)
+            }
         }
     }
     const deleteElement=(e)=>{
-        // console.log(e);
-        let item = elements.find(({id})=>id===dragged.id);
-        if(item!==undefined){
-            elementDispatch({type:"delete",item:item});
+        console.log("delete"+e.target.id);
+        if(e.type === "dblclick"){
+            if(contentElements.findIndex(({id})=> id === parseInt(e.target.id)) >= 0){
+                contentElementDispatch({type:"delete",item:elements[e.target.id]})
+            }
+        }else{
+            let item = elements.find(({id})=>id===dragged.id);
+            if(item!==undefined){
+                elementDispatch({type:"delete",item:item});
+            }
         }
+
     }
     const toggleSelect=(itemId)=>{
         console.log(itemId)
